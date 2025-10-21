@@ -28,20 +28,25 @@ class TechDebtGPTScraper {
     console.log('🔐 Logging into TechDebtGPT...');
 
     // Navigate to login page
-    await this.page.goto('https://app.techdebtgpt.com/sign-in');
+    await this.page.goto('https://app.techdebtgpt.com/login', { waitUntil: 'networkidle' });
 
-    // Wait for login form
-    await this.page.waitForSelector('input[type="email"]');
+    // Wait for the form to be visible
+    await this.page.waitForSelector('input[placeholder="Enter Email"]', { timeout: 10000 });
 
-    // Fill credentials
-    await this.page.fill('input[type="email"]', this.email);
-    await this.page.fill('input[type="password"]', this.password);
+    // Fill in email
+    await this.page.fill('input[placeholder="Enter Email"]', this.email);
+    console.log('   ✓ Email entered');
 
-    // Click sign in button
-    await this.page.click('button[type="submit"]');
+    // Fill in password
+    await this.page.fill('input[placeholder="Enter Password"]', this.password);
+    console.log('   ✓ Password entered');
 
-    // Wait for navigation to complete
-    await this.page.waitForNavigation({ waitUntil: 'networkidle' });
+    // Click the Sign in button
+    await this.page.click('button:has-text("Sign in")');
+    console.log('   ✓ Sign in button clicked');
+
+    // Wait for navigation to complete (wait for URL to change or for a dashboard element)
+    await this.page.waitForTimeout(3000);
 
     console.log('✅ Successfully logged in');
   }
@@ -49,98 +54,186 @@ class TechDebtGPTScraper {
   async navigateToTeamPerformance() {
     console.log('📊 Navigating to team performance page...');
 
-    // Navigate to the specific project's team performance page
-    await this.page.goto(this.projectUrl);
-
-    // Wait for performance data to load
-    await this.page.waitForSelector('[data-testid="team-performance-table"], .team-member, .contributor', {
-      timeout: 10000
-    }).catch(() => {
-      console.log('⚠️  Standard selectors not found, trying alternative selectors...');
-    });
-
-    // Give time for any dynamic content to load
+    // First, navigate to the project URL
+    await this.page.goto(this.projectUrl, { waitUntil: 'networkidle' });
     await this.page.waitForTimeout(2000);
 
-    console.log('✅ Team performance page loaded');
+    // Look for "Select Repository" button and click it
+    console.log('   Looking for repository selector...');
+
+    try {
+      // Click on "Select Repository" dropdown
+      await this.page.click('text=Select Repository');
+      console.log('   ✓ Clicked repository dropdown');
+      await this.page.waitForTimeout(1500);
+
+      // Take screenshot of dropdown options
+      await this.page.screenshot({ path: './screenshots/dropdown-options.png', fullPage: true });
+
+      // Try to find and click todo-ai-agents option
+      const repoOption = await this.page.locator('text=todo-ai-agents').first();
+      if (await repoOption.count() > 0) {
+        await repoOption.click();
+        console.log('   ✓ Selected todo-ai-agents repository');
+        await this.page.waitForTimeout(3000);
+      } else {
+        console.log('   ⚠️  todo-ai-agents not found in dropdown, trying first available repository');
+        // Click the first repository option if todo-ai-agents not found
+        await this.page.locator('li, div[role="option"], button').first().click();
+        await this.page.waitForTimeout(3000);
+      }
+    } catch (e) {
+      console.log('   ⚠️  Could not select repository:', e.message);
+    }
+
+    // Make sure we're on the Team Performance tab (not PR Analysis)
+    console.log('   Ensuring Team Performance tab is selected...');
+    try {
+      // Wait for tabs to be visible
+      await this.page.waitForSelector('text=Team Performance', { timeout: 5000 });
+      await this.page.click('text=Team Performance');
+      console.log('   ✓ Clicked Team Performance tab');
+      await this.page.waitForTimeout(3000);
+    } catch (e) {
+      console.log('   ⚠️  Team Performance tab not found or already selected:', e.message);
+    }
+
+    // Wait for data to load
+    await this.page.waitForTimeout(3000);
+
+    // Scroll down to reveal team performance data
+    console.log('   Scrolling down to reveal data...');
+    await this.page.evaluate(() => window.scrollBy(0, 1000));
+    await this.page.waitForTimeout(2000);
+
+    // Scroll more to ensure all data is visible
+    await this.page.evaluate(() => window.scrollBy(0, 1000));
+    await this.page.waitForTimeout(2000);
+
+    // Take final screenshot after scrolling
+    await this.page.screenshot({ path: './screenshots/team-performance-final.png', fullPage: true });
+
+    console.log('✅ Team performance page loaded and scrolled');
   }
 
   async extractAgentMetrics() {
     console.log('📈 Extracting agent performance metrics...');
 
+    // Scroll to ensure all data is visible before extraction
+    await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await this.page.waitForTimeout(2000);
+
+    // First, let's get the page content to understand structure
+    const pageContent = await this.page.content();
+
+    // Look for any table or grid containing team/contributor data
     const metrics = await this.page.evaluate(() => {
       const agents = [];
 
-      // Try multiple selector strategies
-      const selectors = [
-        '.team-member',
-        '.contributor',
-        '[data-testid="contributor-row"]',
-        'tr[data-contributor]',
-        '.performance-row'
-      ];
+      // Strategy 1: Look for table rows with team member data
+      const tables = document.querySelectorAll('table');
 
-      let rows = [];
-      for (const selector of selectors) {
-        rows = document.querySelectorAll(selector);
-        if (rows.length > 0) break;
-      }
+      for (const table of tables) {
+        const rows = table.querySelectorAll('tbody tr');
 
-      if (rows.length === 0) {
-        // Fallback: Try to find any table rows
-        const tables = document.querySelectorAll('table');
-        for (const table of tables) {
-          const tableRows = table.querySelectorAll('tbody tr');
-          if (tableRows.length > 0) {
-            rows = tableRows;
-            break;
+        rows.forEach(row => {
+          const cells = Array.from(row.querySelectorAll('td'));
+
+          if (cells.length > 0) {
+            // Extract text from cells
+            const cellTexts = cells.map(cell => cell.textContent.trim());
+
+            // Look for name in first cell (like "ipanov-ritech")
+            const nameCell = cellTexts[0];
+
+            // Skip if no name
+            if (!nameCell || nameCell === '') return;
+
+            const agent = {
+              name: nameCell,
+              email: nameCell.includes('@') ? nameCell : `${nameCell}@techdebtgpt.user`,
+              commits: 0,
+              pullRequests: 0,
+              codeReviews: 0,
+              bugsIntroduced: 0,
+              linesAdded: 0,
+              linesDeleted: 0,
+              techDebtScore: 0,
+              velocity: 0,
+              role: 'Developer',
+              timestamp: new Date().toISOString()
+            };
+
+            // Extract PRs from second column (format: "2 / 2")
+            if (cellTexts[1]) {
+              const prMatch = cellTexts[1].match(/(\d+)\s*\/\s*(\d+)/);
+              if (prMatch) {
+                agent.pullRequests = parseInt(prMatch[1]);
+              }
+            }
+
+            // Extract numeric values from remaining cells
+            cellTexts.forEach((text, idx) => {
+              // Skip first two columns (name and PRs)
+              if (idx < 2) return;
+
+              const numbers = text.match(/\d+(\.\d+)?/g);
+              if (numbers) {
+                const val = parseFloat(numbers[0]);
+
+                // Map based on column headers or content
+                if (text.includes('/PR')) {
+                  // These are metrics per PR - use for quality/velocity estimation
+                  if (idx === 2) agent.velocity = val; // Avg. Estimation
+                  else if (idx === 5) agent.techDebtScore = 100 - (val * 10); // Quality inverse
+                }
+              }
+            });
+
+            // Only add if we have actual data
+            if (agent.pullRequests > 0 || agent.commits > 0) {
+              agents.push(agent);
+            }
           }
-        }
+        });
       }
 
-      rows.forEach(row => {
-        // Extract agent name/email
-        const nameElement = row.querySelector('.name, .contributor-name, td:first-child, .email');
-        const name = nameElement ? nameElement.textContent.trim() : 'Unknown';
+      // Strategy 2: Look for card/list layouts if no table found
+      if (agents.length === 0) {
+        const memberCards = document.querySelectorAll('[class*="member"], [class*="contributor"], [class*="developer"]');
 
-        // Extract metrics (adapt these selectors based on actual TechDebtGPT HTML)
-        const cells = row.querySelectorAll('td, .metric');
+        memberCards.forEach(card => {
+          const text = card.textContent;
+          const emailMatch = text.match(/[\w.-]+@[\w.-]+\.\w+/);
 
-        const agent = {
-          name: name,
-          email: nameElement?.getAttribute('data-email') || name,
-          commits: 0,
-          pullRequests: 0,
-          codeReviews: 0,
-          bugsIntroduced: 0,
-          linesAdded: 0,
-          linesDeleted: 0,
-          techDebtScore: 0,
-          velocity: 0,
-          timestamp: new Date().toISOString()
-        };
-
-        // Try to parse numeric metrics from cells
-        cells.forEach((cell, index) => {
-          const text = cell.textContent.trim();
-          const number = parseInt(text) || parseFloat(text) || 0;
-
-          // Map cells to metrics based on position and content
-          if (text.includes('commit')) agent.commits = number;
-          if (text.includes('PR') || text.includes('pull')) agent.pullRequests = number;
-          if (text.includes('review')) agent.codeReviews = number;
-          if (text.includes('bug')) agent.bugsIntroduced = number;
-          if (text.includes('debt') || text.includes('score')) agent.techDebtScore = number;
-          if (text.includes('velocity')) agent.velocity = number;
+          if (emailMatch) {
+            agents.push({
+              name: card.querySelector('[class*="name"]')?.textContent?.trim() || emailMatch[0],
+              email: emailMatch[0],
+              commits: 0,
+              pullRequests: 0,
+              codeReviews: 0,
+              bugsIntroduced: 0,
+              linesAdded: 0,
+              linesDeleted: 0,
+              techDebtScore: 0,
+              velocity: 0,
+              timestamp: new Date().toISOString()
+            });
+          }
         });
-
-        agents.push(agent);
-      });
+      }
 
       return agents;
     });
 
     console.log(`✅ Extracted metrics for ${metrics.length} agents`);
+
+    // If no agents found, log page structure for debugging
+    if (metrics.length === 0) {
+      console.log('⚠️  No agents found. Check screenshots/team-performance-final.png for page structure');
+    }
+
     return metrics;
   }
 

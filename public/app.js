@@ -1,28 +1,238 @@
 /**
  * Agent Health Monitor - Dashboard Application
- * Frontend logic for repo management, metrics display, and agent improvements
+ * Frontend logic for loading and displaying MVP demo results
  */
-
-const API_BASE = window.location.origin + '/api';
 
 class AgentHealthApp {
   constructor() {
-    this.currentRepo = null;
-    this.repositories = [];
-    this.agents = [];
-    this.latestAnalysis = null;
+    this.demoData = null;
+    this.currentIteration = 2; // Start with iteration 2 (post-analysis)
 
     this.init();
   }
 
   async init() {
     console.log('🚀 Initializing Agent Health Monitor...');
-    await this.loadRepositories();
+    await this.loadDemoResults();
+    this.renderDashboard();
   }
 
-  // ========== Repository Management ==========
+  async loadDemoResults() {
+    try {
+      const response = await fetch('../data/mvp-demo-results.json');
+      this.demoData = await response.json();
+      console.log('✅ Loaded demo results:', this.demoData);
+    } catch (error) {
+      console.error('Failed to load demo results:', error);
+      this.showError('Failed to load demo data. Please run the demo first: node run-demo.js');
+    }
+  }
 
-  async loadRepositories() {
+  renderDashboard() {
+    if (!this.demoData) return;
+
+    const analysis = this.demoData.initialAnalysis;
+
+    // Update stats
+    document.getElementById('team-score').textContent = `${analysis.teamAverageScore}/100`;
+    document.getElementById('healthy-count').textContent = analysis.healthyAgents.length;
+    document.getElementById('warning-count').textContent = analysis.warningAgents.length;
+    document.getElementById('critical-count').textContent = analysis.criticalAgents.length;
+
+    // Render agent health chart
+    this.renderAgentHealthChart();
+
+    // Render agents table
+    this.renderAgentsTable();
+
+    // Render improvements
+    this.renderImprovements();
+  }
+
+  renderAgentHealthChart() {
+    const container = document.getElementById('agent-health-chart');
+    const agents = this.demoData.initialAnalysis.allAgents;
+
+    container.innerHTML = agents.map(agent => `
+      <div class="agent-bar">
+        <div class="agent-info">
+          <span class="agent-name">${agent.name}</span>
+          <span class="agent-score">${agent.health.overall}/100</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill ${this.getScoreClass(agent.health.overall)}"
+               style="width: ${agent.health.overall}%">
+            ${agent.health.status}
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  renderAgentsTable() {
+    const tbody = document.getElementById('agents-table-body');
+    const agents = this.demoData.scenario[`iteration${this.currentIteration}`].data.agents;
+
+    tbody.innerHTML = agents.map(agent => {
+      const health = this.calculateAgentHealth(agent);
+      return `
+        <tr>
+          <td>${agent.name}</td>
+          <td><strong>${health.overall}/100</strong></td>
+          <td>${agent.commits}</td>
+          <td>${agent.pullRequests}</td>
+          <td>${agent.bugsIntroduced}</td>
+          <td>${agent.codeReviews}</td>
+          <td>${agent.velocity}</td>
+          <td><span class="status-badge status-${this.getScoreClass(health.overall)}">${health.status}</span></td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  calculateAgentHealth(agent) {
+    // Simplified health calculation matching analyzer logic
+    const productivity = Math.min(100, (agent.commits / 10) * 100);
+    const quality = Math.max(0, 100 - (agent.bugsIntroduced / agent.pullRequests || 0) * 100);
+    const collaboration = Math.min(100, (agent.codeReviews / 5) * 100);
+    const reliability = Math.min(100, (agent.velocity / 10) * 100);
+
+    const overall = Math.round(
+      productivity * 0.30 +
+      quality * 0.35 +
+      collaboration * 0.20 +
+      reliability * 0.15
+    );
+
+    let status = 'healthy';
+    if (overall < 60) status = 'critical';
+    else if (overall < 80) status = 'warning';
+
+    return { overall, status, productivity, quality, collaboration, reliability };
+  }
+
+  renderImprovements() {
+    const container = document.getElementById('improvements-container');
+    const improvements = this.demoData.improvements;
+
+    if (!improvements) {
+      container.innerHTML = '<div class="loading">No improvements generated yet.</div>';
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="card">
+        <h2 class="card-title">Target Agent: ${improvements.agent}</h2>
+        <div class="stats-grid" style="margin-bottom: 2rem;">
+          <div class="stat-card">
+            <div class="stat-label">Current Score</div>
+            <div class="stat-value stat-warning">${improvements.currentScore.toFixed(1)}/100</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Target Score</div>
+            <div class="stat-value stat-success">${improvements.targetScore}/100</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Expected Improvement</div>
+            <div class="stat-value">+${improvements.expectedImpact.estimatedScoreIncrease}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Timeline</div>
+            <div class="stat-value" style="font-size: 1.25rem;">${improvements.expectedImpact.timeToImprovement}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Root Causes</h2>
+        ${improvements.rootCauses.map((cause, i) => `
+          <div class="improvement-card" style="margin-bottom: 1rem;">
+            <div class="improvement-header">
+              <div>
+                <div class="improvement-title">${i + 1}. ${cause.category}</div>
+                <div class="improvement-category">Score: ${cause.score}/100</div>
+              </div>
+              <span class="priority-badge priority-${cause.severity}">${cause.severity}</span>
+            </div>
+            <ul class="improvement-list">
+              ${cause.issues.map(issue => `<li>${issue}</li>`).join('')}
+            </ul>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Improvement Recommendations</h2>
+        ${improvements.recommendations.map((rec, i) => `
+          <div class="improvement-card">
+            <div class="improvement-header">
+              <div>
+                <div class="improvement-title">${i + 1}. ${rec.title}</div>
+                <div class="improvement-category">${rec.category}</div>
+              </div>
+              <span class="priority-badge priority-${rec.priority}">${rec.priority}</span>
+            </div>
+
+            <div class="improvement-section">
+              <div class="improvement-section-title">Actions to Take:</div>
+              <ul class="improvement-list">
+                ${rec.actions.map(action => `<li>${action}</li>`).join('')}
+              </ul>
+            </div>
+
+            <div class="improvement-section">
+              <div class="improvement-section-title">Agent Configuration Updates:</div>
+              <ul class="improvement-list config-changes">
+                ${rec.agentPromptChanges.map(change => `<li>${change}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  getScoreClass(score) {
+    if (score >= 80) return 'healthy';
+    if (score >= 60) return 'warning';
+    return 'critical';
+  }
+
+  showError(message) {
+    console.error('❌', message);
+    alert('Error: ' + message);
+  }
+}
+
+// Tab switching
+function switchTab(tabName) {
+  // Remove active class from all tabs and panes
+  document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('tab-active'));
+  document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+
+  // Add active class to clicked tab
+  event.target.classList.add('tab-active');
+
+  // Show corresponding pane
+  document.getElementById(`${tabName}-tab`).classList.add('active');
+}
+
+function runAnalysis() {
+  alert('Analysis already complete! View results in the Overview and Improvements tabs.');
+}
+
+// Initialize app when DOM is ready
+let app;
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    app = new AgentHealthApp();
+  });
+} else {
+  app = new AgentHealthApp();
+}
+
+// Old functions kept for compatibility
+function loadRepositories() {
     try {
       const response = await fetch(`${API_BASE}/repos`);
       this.repositories = await response.json();
