@@ -1,0 +1,222 @@
+{
+  "scenario": {
+    "name": "Cross-Functional Feature Development",
+    "description": "4 AI agents collaborating on a user authentication feature",
+    "iterations": 3
+  },
+  "iteration1": {
+    "name": "Initial Implementation",
+    "description": "Agents implement basic authentication flow",
+    "data": {
+      "success": true,
+      "timestamp": "2025-10-21T09:00:27.528Z",
+      "iteration": 1,
+      "agents": [
+        {
+          "commits": 9,
+          "pullRequests": 3,
+          "codeReviews": 4,
+          "bugsIntroduced": 1,
+          "techDebtScore": 15,
+          "linesAdded": 424,
+          "linesDeleted": 169,
+          "velocity": 8.5,
+          "name": "Product Owner AI",
+          "email": "techdebtdemo2025po@outlook.com",
+          "role": "Product Owner",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        },
+        {
+          "commits": 4,
+          "pullRequests": 2,
+          "codeReviews": 2,
+          "bugsIntroduced": 3,
+          "techDebtScore": 55,
+          "linesAdded": 222,
+          "linesDeleted": 88,
+          "velocity": 4.5,
+          "name": "Backend AI",
+          "email": "techdebtdemo2025be@outlook.com",
+          "role": "Backend Developer",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        },
+        {
+          "commits": 7,
+          "pullRequests": 3,
+          "codeReviews": 4,
+          "bugsIntroduced": 1,
+          "techDebtScore": 25,
+          "linesAdded": 375,
+          "linesDeleted": 151,
+          "velocity": 7.5,
+          "name": "Frontend AI",
+          "email": "techdebtdemo2025fe@gmail.com",
+          "role": "Frontend Developer",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        },
+        {
+          "commits": 7,
+          "pullRequests": 3,
+          "codeReviews": 4,
+          "bugsIntroduced": 1,
+          "techDebtScore": 30,
+          "linesAdded": 348,
+          "linesDeleted": 138,
+          "velocity": 7,
+          "name": "DevOps AI",
+          "email": "devops-agent-bot@todo-ai-agents.demo",
+          "role": "DevOps Engineer",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        }
+      ]
+    },
+    "expectedOutcome": "Backend AI identified as lowest performer"
+  },
+  "iteration2": {
+    "name": "Bug Fixes and Improvements",
+    "description": "Team addresses issues from iteration 1",
+    "data": {
+      "success": true,
+      "timestamp": "2025-10-21T09:00:27.528Z",
+      "iteration": 2,
+      "agents": [
+        {
+          "commits": 17,
+          "pullRequests": 7,
+          "codeReviews": 9,
+          "bugsIntroduced": 1,
+          "techDebtScore": 15,
+          "linesAdded": 844,
+          "linesDeleted": 339,
+          "velocity": 8.5,
+          "name": "Product Owner AI",
+          "email": "techdebtdemo2025po@outlook.com",
+          "role": "Product Owner",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        },
+        {
+          "commits": 9,
+          "pullRequests": 4,
+          "codeReviews": 4,
+          "bugsIntroduced": 5,
+          "techDebtScore": 55,
+          "linesAdded": 442,
+          "linesDeleted": 182,
+          "velocity": 4.5,
+          "name": "Backend AI",
+          "email": "techdebtdemo2025be@outlook.com",
+          "role": "Backend Developer",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        },
+        {
+          "commits": 15,
+          "pullRequests": 6,
+          "codeReviews": 7,
+          "bugsIntroduced": 3,
+          "techDebtScore": 25,
+          "linesAdded": 749,
+          "linesDeleted": 298,
+          "velocity": 7.5,
+          "name": "Frontend AI",
+          "email": "techdebtdemo2025fe@gmail.com",
+          "role": "Frontend Developer",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        },
+        {
+          "commits": 14,
+          "pullRequests": 6,
+          "codeReviews": 7,
+          "bugsIntroduced": 3,
+          "techDebtScore": 30,
+          "linesAdded": 699,
+          "linesDeleted": 282,
+          "velocity": 7,
+          "name": "DevOps AI",
+          "email": "devops-agent-bot@todo-ai-agents.demo",
+          "role": "DevOps Engineer",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        }
+      ]
+    },
+    "expectedOutcome": "Backend AI still struggling with quality metrics"
+  },
+  "metaAgentIntervention": {
+    "name": "Meta-Agent Analysis",
+    "description": "System analyzes Backend AI and suggests improvements",
+    "targetAgent": "techdebtdemo2025be@outlook.com",
+    "recommendations": [
+      "Increase test coverage requirements",
+      "Add pre-commit validation hooks",
+      "Break down tasks into smaller units",
+      "Require code review before submission"
+    ]
+  },
+  "iteration3": {
+    "name": "Post-Improvement Performance",
+    "description": "Backend AI implements recommended improvements",
+    "data": {
+      "success": true,
+      "timestamp": "2025-10-21T09:00:27.528Z",
+      "iteration": 3,
+      "agents": [
+        {
+          "commits": 25,
+          "pullRequests": 10,
+          "codeReviews": 13,
+          "bugsIntroduced": 2,
+          "techDebtScore": 15,
+          "linesAdded": 1267,
+          "linesDeleted": 512,
+          "velocity": 8.5,
+          "name": "Product Owner AI",
+          "email": "techdebtdemo2025po@outlook.com",
+          "role": "Product Owner",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        },
+        {
+          "commits": 7,
+          "pullRequests": 3,
+          "codeReviews": 4,
+          "bugsIntroduced": 1,
+          "techDebtScore": 25,
+          "linesAdded": 372,
+          "linesDeleted": 151,
+          "velocity": 7.5,
+          "name": "Backend AI",
+          "email": "techdebtdemo2025be@outlook.com",
+          "role": "Backend Developer",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        },
+        {
+          "commits": 22,
+          "pullRequests": 9,
+          "codeReviews": 11,
+          "bugsIntroduced": 4,
+          "techDebtScore": 25,
+          "linesAdded": 1115,
+          "linesDeleted": 450,
+          "velocity": 7.5,
+          "name": "Frontend AI",
+          "email": "techdebtdemo2025fe@gmail.com",
+          "role": "Frontend Developer",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        },
+        {
+          "commits": 21,
+          "pullRequests": 9,
+          "codeReviews": 11,
+          "bugsIntroduced": 5,
+          "techDebtScore": 30,
+          "linesAdded": 1051,
+          "linesDeleted": 424,
+          "velocity": 7,
+          "name": "DevOps AI",
+          "email": "devops-agent-bot@todo-ai-agents.demo",
+          "role": "DevOps Engineer",
+          "timestamp": "2025-10-21T09:00:27.528Z"
+        }
+      ]
+    },
+    "expectedOutcome": "Backend AI shows 30-40% improvement in key metrics"
+  }
+}

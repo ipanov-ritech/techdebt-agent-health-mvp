@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Health Monitor</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="6" fill="#4F46E5"/>
+            <path d="M16 8L20 16L16 24L12 16L16 8Z" fill="white"/>
+          </svg>
+          <span class="logo-text">AgentHealth<span class="logo-accent">GPT</span></span>
+          <span class="beta-badge">BETA</span>
+        </div>
+        <div class="header-right">
+          <button class="btn-secondary">My Projects</button>
+          <div class="user-menu">
+            <span class="user-email">ipanov@ritech.co</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="#" class="breadcrumb-link">techdebtgpt-agent-health-mvp</a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-current">todo-ai-agents</span>
+      </div>
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <h1 class="page-title">Agent Health Monitor</h1>
+        <div class="page-actions">
+          <button class="btn-primary" onclick="runAnalysis()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Run Analysis
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab tab-active" onclick="switchTab('overview')">Overview</button>
+        <button class="tab" onclick="switchTab('agents')">Team Performance</button>
+        <button class="tab" onclick="switchTab('improvements')">Improvements</button>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content">
+        <!-- Overview Tab -->
+        <div id="overview-tab" class="tab-pane active">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Team Health Score</div>
+              <div class="stat-value" id="team-score">85/100</div>
+              <div class="stat-trend positive">+5 from last sprint</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Healthy Agents</div>
+              <div class="stat-value stat-success" id="healthy-count">3</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Warning Agents</div>
+              <div class="stat-value stat-warning" id="warning-count">1</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Critical Agents</div>
+              <div class="stat-value stat-danger" id="critical-count">0</div>
+            </div>
+          </div>
+
+          <!-- Agent Health Chart -->
+          <div class="card">
+            <h2 class="card-title">Agent Health Overview</h2>
+            <div id="agent-health-chart" class="chart-container"></div>
+          </div>
+        </div>
+
+        <!-- Agents Tab -->
+        <div id="agents-tab" class="tab-pane">
+          <div class="card">
+            <h2 class="card-title">Team Performance</h2>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Agent</th>
+                    <th>Health Score</th>
+                    <th>Commits</th>
+                    <th>PRs</th>
+                    <th>Bugs</th>
+                    <th>Reviews</th>
+                    <th>Velocity</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="agents-table-body">
+                  <!-- Populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Improvements Tab -->
+        <div id="improvements-tab" class="tab-pane">
+          <div id="improvements-container">
+            <!-- Populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

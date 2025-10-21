@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --version)",
+      "Bash(npm --version:*)",
+      "Bash(test:*)",
+      "Read(//c/Users/USER/Documents/**)",
+      "Bash(cat:*)",
+      "Bash(npx playwright install chromium)",
+      "Bash(node src/scraper/techdebtgpt-scraper.js:*)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Read(//c/Users/USER/AppData/Local/npm-cache/_logs/**)",
+      "Bash(node run-demo.js:*)",
+      "Bash(node server.js:*)",
+      "Bash(node demo-server.js)",
+      "Read(//c/Repos/todo-ai-agents/.claude/agents/**)",
+      "Bash(git add:*)",
+      "Bash(if exist nul del nul)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

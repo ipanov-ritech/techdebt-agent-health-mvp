@@ -1,0 +1,887 @@
+{
+  "timestamp": "2025-10-21T09:00:27.526Z",
+  "scenario": {
+    "scenario": {
+      "name": "Cross-Functional Feature Development",
+      "description": "4 AI agents collaborating on a user authentication feature",
+      "iterations": 3
+    },
+    "iteration1": {
+      "name": "Initial Implementation",
+      "description": "Agents implement basic authentication flow",
+      "data": {
+        "success": true,
+        "timestamp": "2025-10-21T09:00:27.522Z",
+        "iteration": 1,
+        "agents": [
+          {
+            "commits": 9,
+            "pullRequests": 3,
+            "codeReviews": 4,
+            "bugsIntroduced": 1,
+            "techDebtScore": 15,
+            "linesAdded": 424,
+            "linesDeleted": 172,
+            "velocity": 8.5,
+            "name": "Product Owner AI",
+            "email": "techdebtdemo2025po@outlook.com",
+            "role": "Product Owner",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          },
+          {
+            "commits": 5,
+            "pullRequests": 2,
+            "codeReviews": 2,
+            "bugsIntroduced": 3,
+            "techDebtScore": 55,
+            "linesAdded": 227,
+            "linesDeleted": 91,
+            "velocity": 4.5,
+            "name": "Backend AI",
+            "email": "techdebtdemo2025be@outlook.com",
+            "role": "Backend Developer",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          },
+          {
+            "commits": 8,
+            "pullRequests": 3,
+            "codeReviews": 4,
+            "bugsIntroduced": 1,
+            "techDebtScore": 25,
+            "linesAdded": 379,
+            "linesDeleted": 149,
+            "velocity": 7.5,
+            "name": "Frontend AI",
+            "email": "techdebtdemo2025fe@gmail.com",
+            "role": "Frontend Developer",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          },
+          {
+            "commits": 7,
+            "pullRequests": 3,
+            "codeReviews": 3,
+            "bugsIntroduced": 1,
+            "techDebtScore": 30,
+            "linesAdded": 349,
+            "linesDeleted": 142,
+            "velocity": 7,
+            "name": "DevOps AI",
+            "email": "devops-agent-bot@todo-ai-agents.demo",
+            "role": "DevOps Engineer",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          }
+        ]
+      },
+      "expectedOutcome": "Backend AI identified as lowest performer"
+    },
+    "iteration2": {
+      "name": "Bug Fixes and Improvements",
+      "description": "Team addresses issues from iteration 1",
+      "data": {
+        "success": true,
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "iteration": 2,
+        "agents": [
+          {
+            "commits": 17,
+            "pullRequests": 7,
+            "codeReviews": 9,
+            "bugsIntroduced": 2,
+            "techDebtScore": 15,
+            "linesAdded": 845,
+            "linesDeleted": 337,
+            "velocity": 8.5,
+            "name": "Product Owner AI",
+            "email": "techdebtdemo2025po@outlook.com",
+            "role": "Product Owner",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          },
+          {
+            "commits": 9,
+            "pullRequests": 3,
+            "codeReviews": 4,
+            "bugsIntroduced": 6,
+            "techDebtScore": 55,
+            "linesAdded": 447,
+            "linesDeleted": 185,
+            "velocity": 4.5,
+            "name": "Backend AI",
+            "email": "techdebtdemo2025be@outlook.com",
+            "role": "Backend Developer",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          },
+          {
+            "commits": 15,
+            "pullRequests": 6,
+            "codeReviews": 8,
+            "bugsIntroduced": 2,
+            "techDebtScore": 25,
+            "linesAdded": 753,
+            "linesDeleted": 298,
+            "velocity": 7.5,
+            "name": "Frontend AI",
+            "email": "techdebtdemo2025fe@gmail.com",
+            "role": "Frontend Developer",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          },
+          {
+            "commits": 14,
+            "pullRequests": 5,
+            "codeReviews": 7,
+            "bugsIntroduced": 3,
+            "techDebtScore": 30,
+            "linesAdded": 693,
+            "linesDeleted": 277,
+            "velocity": 7,
+            "name": "DevOps AI",
+            "email": "devops-agent-bot@todo-ai-agents.demo",
+            "role": "DevOps Engineer",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          }
+        ]
+      },
+      "expectedOutcome": "Backend AI still struggling with quality metrics"
+    },
+    "metaAgentIntervention": {
+      "name": "Meta-Agent Analysis",
+      "description": "System analyzes Backend AI and suggests improvements",
+      "targetAgent": "techdebtdemo2025be@outlook.com",
+      "recommendations": [
+        "Increase test coverage requirements",
+        "Add pre-commit validation hooks",
+        "Break down tasks into smaller units",
+        "Require code review before submission"
+      ]
+    },
+    "iteration3": {
+      "name": "Post-Improvement Performance",
+      "description": "Backend AI implements recommended improvements",
+      "data": {
+        "success": true,
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "iteration": 3,
+        "agents": [
+          {
+            "commits": 26,
+            "pullRequests": 10,
+            "codeReviews": 13,
+            "bugsIntroduced": 2,
+            "techDebtScore": 15,
+            "linesAdded": 1265,
+            "linesDeleted": 514,
+            "velocity": 8.5,
+            "name": "Product Owner AI",
+            "email": "techdebtdemo2025po@outlook.com",
+            "role": "Product Owner",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          },
+          {
+            "commits": 7,
+            "pullRequests": 3,
+            "codeReviews": 4,
+            "bugsIntroduced": 1,
+            "techDebtScore": 25,
+            "linesAdded": 377,
+            "linesDeleted": 149,
+            "velocity": 7.5,
+            "name": "Backend AI",
+            "email": "techdebtdemo2025be@outlook.com",
+            "role": "Backend Developer",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          },
+          {
+            "commits": 23,
+            "pullRequests": 9,
+            "codeReviews": 11,
+            "bugsIntroduced": 4,
+            "techDebtScore": 25,
+            "linesAdded": 1122,
+            "linesDeleted": 454,
+            "velocity": 7.5,
+            "name": "Frontend AI",
+            "email": "techdebtdemo2025fe@gmail.com",
+            "role": "Frontend Developer",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          },
+          {
+            "commits": 21,
+            "pullRequests": 9,
+            "codeReviews": 11,
+            "bugsIntroduced": 4,
+            "techDebtScore": 30,
+            "linesAdded": 1063,
+            "linesDeleted": 416,
+            "velocity": 7,
+            "name": "DevOps AI",
+            "email": "devops-agent-bot@todo-ai-agents.demo",
+            "role": "DevOps Engineer",
+            "timestamp": "2025-10-21T09:00:27.523Z"
+          }
+        ]
+      },
+      "expectedOutcome": "Backend AI shows 30-40% improvement in key metrics"
+    }
+  },
+  "initialAnalysis": {
+    "timestamp": "2025-10-21T09:00:27.524Z",
+    "teamSize": 4,
+    "teamAverageScore": 85,
+    "lowestPerformer": {
+      "name": "Backend AI",
+      "email": "techdebtdemo2025be@outlook.com",
+      "score": 72,
+      "status": "warning",
+      "breakdown": {
+        "productivity": 100,
+        "quality": 43,
+        "collaboration": 100,
+        "reliability": 45
+      }
+    },
+    "highestPerformer": {
+      "name": "Product Owner AI",
+      "email": "techdebtdemo2025po@outlook.com",
+      "score": 92
+    },
+    "criticalAgents": [],
+    "warningAgents": [
+      {
+        "commits": 9,
+        "pullRequests": 3,
+        "codeReviews": 4,
+        "bugsIntroduced": 6,
+        "techDebtScore": 55,
+        "linesAdded": 447,
+        "linesDeleted": 185,
+        "velocity": 4.5,
+        "name": "Backend AI",
+        "email": "techdebtdemo2025be@outlook.com",
+        "role": "Backend Developer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 72,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 43,
+            "collaboration": 100,
+            "reliability": 45
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "warning"
+        }
+      }
+    ],
+    "healthyAgents": [
+      {
+        "commits": 14,
+        "pullRequests": 5,
+        "codeReviews": 7,
+        "bugsIntroduced": 3,
+        "techDebtScore": 30,
+        "linesAdded": 693,
+        "linesDeleted": 277,
+        "velocity": 7,
+        "name": "DevOps AI",
+        "email": "devops-agent-bot@todo-ai-agents.demo",
+        "role": "DevOps Engineer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 85,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 70,
+            "collaboration": 100,
+            "reliability": 70
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      },
+      {
+        "commits": 15,
+        "pullRequests": 6,
+        "codeReviews": 8,
+        "bugsIntroduced": 2,
+        "techDebtScore": 25,
+        "linesAdded": 753,
+        "linesDeleted": 298,
+        "velocity": 7.5,
+        "name": "Frontend AI",
+        "email": "techdebtdemo2025fe@gmail.com",
+        "role": "Frontend Developer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 89,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 78,
+            "collaboration": 100,
+            "reliability": 75
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      },
+      {
+        "commits": 17,
+        "pullRequests": 7,
+        "codeReviews": 9,
+        "bugsIntroduced": 2,
+        "techDebtScore": 15,
+        "linesAdded": 845,
+        "linesDeleted": 337,
+        "velocity": 8.5,
+        "name": "Product Owner AI",
+        "email": "techdebtdemo2025po@outlook.com",
+        "role": "Product Owner",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 92,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 83,
+            "collaboration": 100,
+            "reliability": 85
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      }
+    ],
+    "allAgents": [
+      {
+        "commits": 9,
+        "pullRequests": 3,
+        "codeReviews": 4,
+        "bugsIntroduced": 6,
+        "techDebtScore": 55,
+        "linesAdded": 447,
+        "linesDeleted": 185,
+        "velocity": 4.5,
+        "name": "Backend AI",
+        "email": "techdebtdemo2025be@outlook.com",
+        "role": "Backend Developer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 72,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 43,
+            "collaboration": 100,
+            "reliability": 45
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "warning"
+        }
+      },
+      {
+        "commits": 14,
+        "pullRequests": 5,
+        "codeReviews": 7,
+        "bugsIntroduced": 3,
+        "techDebtScore": 30,
+        "linesAdded": 693,
+        "linesDeleted": 277,
+        "velocity": 7,
+        "name": "DevOps AI",
+        "email": "devops-agent-bot@todo-ai-agents.demo",
+        "role": "DevOps Engineer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 85,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 70,
+            "collaboration": 100,
+            "reliability": 70
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      },
+      {
+        "commits": 15,
+        "pullRequests": 6,
+        "codeReviews": 8,
+        "bugsIntroduced": 2,
+        "techDebtScore": 25,
+        "linesAdded": 753,
+        "linesDeleted": 298,
+        "velocity": 7.5,
+        "name": "Frontend AI",
+        "email": "techdebtdemo2025fe@gmail.com",
+        "role": "Frontend Developer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 89,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 78,
+            "collaboration": 100,
+            "reliability": 75
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      },
+      {
+        "commits": 17,
+        "pullRequests": 7,
+        "codeReviews": 9,
+        "bugsIntroduced": 2,
+        "techDebtScore": 15,
+        "linesAdded": 845,
+        "linesDeleted": 337,
+        "velocity": 8.5,
+        "name": "Product Owner AI",
+        "email": "techdebtdemo2025po@outlook.com",
+        "role": "Product Owner",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 92,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 83,
+            "collaboration": 100,
+            "reliability": 85
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      }
+    ],
+    "detailedAnalysis": {
+      "agent": "Backend AI",
+      "email": "techdebtdemo2025be@outlook.com",
+      "rootCauses": [
+        {
+          "category": "quality",
+          "issue": "High bug introduction rate or technical debt",
+          "severity": "critical",
+          "metrics": {
+            "bugsIntroduced": 6,
+            "techDebtScore": 55
+          }
+        },
+        {
+          "category": "reliability",
+          "issue": "Inconsistent velocity",
+          "severity": "medium",
+          "metrics": {
+            "velocity": 4.5
+          }
+        }
+      ],
+      "recommendations": [
+        {
+          "priority": "critical",
+          "action": "Enhance agent quality checks and testing requirements",
+          "details": "Add pre-commit hooks, linting rules, and test coverage requirements",
+          "expectedImpact": "+30% quality score"
+        },
+        {
+          "priority": "medium",
+          "action": "Adjust agent workload and task complexity",
+          "details": "Break down complex tasks into smaller, more manageable pieces",
+          "expectedImpact": "+10% reliability score"
+        }
+      ]
+    }
+  },
+  "improvements": {
+    "agent": "Backend AI",
+    "email": "techdebtdemo2025be@outlook.com",
+    "currentScore": 72,
+    "targetScore": 85,
+    "rootCauses": [
+      {
+        "category": "Quality",
+        "severity": "critical",
+        "score": 43,
+        "issues": [],
+        "metrics": {}
+      },
+      {
+        "category": "Reliability",
+        "severity": "medium",
+        "score": 45,
+        "issues": [
+          "Inconsistent velocity or task completion"
+        ],
+        "metrics": {
+          "velocity": 4.5
+        }
+      }
+    ],
+    "recommendations": [
+      {
+        "priority": "critical",
+        "category": "Quality",
+        "title": "Enhance code quality checks and testing",
+        "actions": [
+          "Add pre-commit linting and formatting checks",
+          "Require unit tests for all new code",
+          "Run test suite before committing",
+          "Add code review checklist for self-review"
+        ],
+        "agentPromptChanges": [
+          "Add instruction: \"Always write unit tests before implementation (TDD)\"",
+          "Add quality gate: \"Run `npm run lint && npm test` before every commit\"",
+          "Add self-review step: \"Review own code for edge cases and error handling\"",
+          "Add constraint: \"Maximum cyclomatic complexity: 10 per function\""
+        ]
+      },
+      {
+        "priority": "medium",
+        "category": "Reliability",
+        "title": "Stabilize velocity and task completion",
+        "actions": [
+          "Focus on completing tasks fully before starting new ones",
+          "Break complex tasks into smaller milestones",
+          "Maintain consistent daily activity",
+          "Communicate blockers early"
+        ],
+        "agentPromptChanges": [
+          "Add discipline: \"Complete one task fully before starting another\"",
+          "Add workflow: \"If task takes > 4 hours, break into subtasks\"",
+          "Add communication: \"Report blockers within 30 minutes of identification\""
+        ]
+      }
+    ],
+    "agentDefinitionUpdates": {
+      "filePath": ".claude/agents/techdebtdemo2025be-agent.md",
+      "sections": [
+        {
+          "title": "Enhance code quality checks and testing",
+          "priority": "critical",
+          "content": "- Add instruction: \"Always write unit tests before implementation (TDD)\"\n- Add quality gate: \"Run `npm run lint && npm test` before every commit\"\n- Add self-review step: \"Review own code for edge cases and error handling\"\n- Add constraint: \"Maximum cyclomatic complexity: 10 per function\""
+        },
+        {
+          "title": "Stabilize velocity and task completion",
+          "priority": "medium",
+          "content": "- Add discipline: \"Complete one task fully before starting another\"\n- Add workflow: \"If task takes > 4 hours, break into subtasks\"\n- Add communication: \"Report blockers within 30 minutes of identification\""
+        }
+      ],
+      "instructionsToAdd": "## Performance Improvement Plan\n**Current Health Score**: 0/100\n**Target Score**: 25/100\n\n### Critical Areas for Improvement\n- **Quality**: \n- **Reliability**: Inconsistent velocity or task completion\n\n### New Guidelines\n- Add instruction: \"Always write unit tests before implementation (TDD)\"\n- Add quality gate: \"Run `npm run lint && npm test` before every commit\"\n- Add self-review step: \"Review own code for edge cases and error handling\"\n- Add constraint: \"Maximum cyclomatic complexity: 10 per function\"\n- Add discipline: \"Complete one task fully before starting another\"\n- Add workflow: \"If task takes > 4 hours, break into subtasks\"\n- Add communication: \"Report blockers within 30 minutes of identification\""
+    },
+    "expectedImpact": {
+      "estimatedScoreIncrease": 40,
+      "timeToImprovement": "1-2 sprints",
+      "confidence": "high"
+    }
+  },
+  "finalAnalysis": {
+    "timestamp": "2025-10-21T09:00:27.526Z",
+    "teamSize": 4,
+    "teamAverageScore": 88,
+    "lowestPerformer": {
+      "name": "DevOps AI",
+      "email": "devops-agent-bot@todo-ai-agents.demo",
+      "score": 83,
+      "status": "healthy",
+      "breakdown": {
+        "productivity": 100,
+        "quality": 65,
+        "collaboration": 100,
+        "reliability": 70
+      }
+    },
+    "highestPerformer": {
+      "name": "Product Owner AI",
+      "email": "techdebtdemo2025po@outlook.com",
+      "score": 92
+    },
+    "criticalAgents": [],
+    "warningAgents": [],
+    "healthyAgents": [
+      {
+        "commits": 21,
+        "pullRequests": 9,
+        "codeReviews": 11,
+        "bugsIntroduced": 4,
+        "techDebtScore": 30,
+        "linesAdded": 1063,
+        "linesDeleted": 416,
+        "velocity": 7,
+        "name": "DevOps AI",
+        "email": "devops-agent-bot@todo-ai-agents.demo",
+        "role": "DevOps Engineer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 83,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 65,
+            "collaboration": 100,
+            "reliability": 70
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      },
+      {
+        "commits": 23,
+        "pullRequests": 9,
+        "codeReviews": 11,
+        "bugsIntroduced": 4,
+        "techDebtScore": 25,
+        "linesAdded": 1122,
+        "linesDeleted": 454,
+        "velocity": 7.5,
+        "name": "Frontend AI",
+        "email": "techdebtdemo2025fe@gmail.com",
+        "role": "Frontend Developer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 85,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 68,
+            "collaboration": 100,
+            "reliability": 75
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      },
+      {
+        "commits": 7,
+        "pullRequests": 3,
+        "codeReviews": 4,
+        "bugsIntroduced": 1,
+        "techDebtScore": 25,
+        "linesAdded": 377,
+        "linesDeleted": 149,
+        "velocity": 7.5,
+        "name": "Backend AI",
+        "email": "techdebtdemo2025be@outlook.com",
+        "role": "Backend Developer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 90,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 83,
+            "collaboration": 100,
+            "reliability": 75
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      },
+      {
+        "commits": 26,
+        "pullRequests": 10,
+        "codeReviews": 13,
+        "bugsIntroduced": 2,
+        "techDebtScore": 15,
+        "linesAdded": 1265,
+        "linesDeleted": 514,
+        "velocity": 8.5,
+        "name": "Product Owner AI",
+        "email": "techdebtdemo2025po@outlook.com",
+        "role": "Product Owner",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 92,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 83,
+            "collaboration": 100,
+            "reliability": 85
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      }
+    ],
+    "allAgents": [
+      {
+        "commits": 21,
+        "pullRequests": 9,
+        "codeReviews": 11,
+        "bugsIntroduced": 4,
+        "techDebtScore": 30,
+        "linesAdded": 1063,
+        "linesDeleted": 416,
+        "velocity": 7,
+        "name": "DevOps AI",
+        "email": "devops-agent-bot@todo-ai-agents.demo",
+        "role": "DevOps Engineer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 83,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 65,
+            "collaboration": 100,
+            "reliability": 70
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      },
+      {
+        "commits": 23,
+        "pullRequests": 9,
+        "codeReviews": 11,
+        "bugsIntroduced": 4,
+        "techDebtScore": 25,
+        "linesAdded": 1122,
+        "linesDeleted": 454,
+        "velocity": 7.5,
+        "name": "Frontend AI",
+        "email": "techdebtdemo2025fe@gmail.com",
+        "role": "Frontend Developer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 85,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 68,
+            "collaboration": 100,
+            "reliability": 75
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      },
+      {
+        "commits": 7,
+        "pullRequests": 3,
+        "codeReviews": 4,
+        "bugsIntroduced": 1,
+        "techDebtScore": 25,
+        "linesAdded": 377,
+        "linesDeleted": 149,
+        "velocity": 7.5,
+        "name": "Backend AI",
+        "email": "techdebtdemo2025be@outlook.com",
+        "role": "Backend Developer",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 90,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 83,
+            "collaboration": 100,
+            "reliability": 75
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      },
+      {
+        "commits": 26,
+        "pullRequests": 10,
+        "codeReviews": 13,
+        "bugsIntroduced": 2,
+        "techDebtScore": 15,
+        "linesAdded": 1265,
+        "linesDeleted": 514,
+        "velocity": 8.5,
+        "name": "Product Owner AI",
+        "email": "techdebtdemo2025po@outlook.com",
+        "role": "Product Owner",
+        "timestamp": "2025-10-21T09:00:27.523Z",
+        "health": {
+          "overall": 92,
+          "breakdown": {
+            "productivity": 100,
+            "quality": 83,
+            "collaboration": 100,
+            "reliability": 85
+          },
+          "weights": {
+            "productivity": 0.3,
+            "quality": 0.35,
+            "collaboration": 0.2,
+            "reliability": 0.15
+          },
+          "status": "healthy"
+        }
+      }
+    ],
+    "detailedAnalysis": {
+      "agent": "DevOps AI",
+      "email": "devops-agent-bot@todo-ai-agents.demo",
+      "rootCauses": [],
+      "recommendations": []
+    }
+  }
+}

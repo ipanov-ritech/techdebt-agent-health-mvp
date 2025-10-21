@@ -1,0 +1,59 @@
+name: Agent Health Check on PR Merge
+
+on:
+  repository_dispatch:
+    types: [pr_merged_to_master]
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        description: 'Target repository to analyze'
+        required: true
+        default: 'ipanov-ritech/todo-ai-agents'
+
+jobs:
+  analyze-agent-health:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Agent Health Monitor
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
+      - name: Run TechDebtGPT scraper
+        env:
+          TECHDEBTGPT_EMAIL: ${{ secrets.TECHDEBTGPT_EMAIL }}
+          TECHDEBTGPT_PASSWORD: ${{ secrets.TECHDEBTGPT_PASSWORD }}
+          TECHDEBTGPT_PROJECT_URL: ${{ secrets.TECHDEBTGPT_PROJECT_URL }}
+        run: node src/scraper/techdebtgpt-scraper.js
+
+      - name: Run agent analysis
+        run: node src/index.js
+        env:
+          TARGET_REPO_OWNER: ${{ github.event.inputs.target_repo || 'ipanov-ritech/todo-ai-agents' }}
+          GITHUB_PAT: ${{ secrets.GITHUB_PAT }}
+
+      - name: Upload screenshots (on failure)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-screenshots
+          path: screenshots/
+          retention-days: 7
+
+      - name: Create summary
+        run: |
+          echo "## Agent Health Analysis Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Target Repository: ${{ github.event.inputs.target_repo || 'ipanov-ritech/todo-ai-agents' }}" >> $GITHUB_STEP_SUMMARY
+          echo "Triggered at: $(date)" >> $GITHUB_STEP_SUMMARY
