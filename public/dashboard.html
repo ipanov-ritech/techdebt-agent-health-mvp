@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Health Monitor - TechDebtGPT Extension</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="#6366f1"/>
+            <path d="M16 8L24 20H8L16 8Z" fill="white"/>
+          </svg>
+          <span class="logo-text">Agent Health Monitor</span>
+          <span class="badge">Beta</span>
+        </div>
+        <nav class="nav">
+          <a href="#dashboard" class="nav-link active">Dashboard</a>
+          <a href="#repositories" class="nav-link">Repositories</a>
+          <a href="#improvements" class="nav-link">Improvements</a>
+          <a href="#settings" class="nav-link">Settings</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+    <div class="container">
+      <!-- Repository Selector -->
+      <section class="section">
+        <div class="section-header">
+          <h2 class="section-title">Select Target Repository</h2>
+          <button class="btn btn-primary" onclick="app.showAddRepoModal()">
+            <span class="icon">+</span>
+            Add Repository
+          </button>
+        </div>
+        <div id="repo-selector" class="repo-selector">
+          <div class="loading">Loading repositories...</div>
+        </div>
+      </section>
+
+      <!-- Team Health Overview -->
+      <section class="section" id="team-health" style="display: none;">
+        <div class="section-header">
+          <h2 class="section-title">Team Health Overview</h2>
+          <div class="actions">
+            <button class="btn btn-secondary" onclick="app.scrapeMetrics()">
+              <span class="icon">🔄</span>
+              Refresh Data
+            </button>
+            <button class="btn btn-primary" onclick="app.runAnalysis()">
+              <span class="icon">🔍</span>
+              Run Analysis
+            </button>
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Team Average</div>
+            <div class="metric-value" id="team-average">--</div>
+            <div class="metric-trend" id="team-trend">--</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Healthy Agents</div>
+            <div class="metric-value" id="healthy-count">--</div>
+            <div class="metric-status healthy">80-100</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Warning</div>
+            <div class="metric-value" id="warning-count">--</div>
+            <div class="metric-status warning">60-79</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Critical</div>
+            <div class="metric-value" id="critical-count">--</div>
+            <div class="metric-status critical"><60</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Agent Leaderboard -->
+      <section class="section" id="leaderboard-section" style="display: none;">
+        <div class="section-header">
+          <h2 class="section-title">Agent Performance Leaderboard</h2>
+        </div>
+        <div class="leaderboard" id="leaderboard">
+          <div class="loading">Run analysis to see leaderboard...</div>
+        </div>
+      </section>
+
+      <!-- Detailed Analysis -->
+      <section class="section" id="analysis-section" style="display: none;">
+        <div class="section-header">
+          <h2 class="section-title">Performance Analysis</h2>
+        </div>
+        <div id="analysis-details">
+          <!-- Analysis content will be inserted here -->
+        </div>
+      </section>
+
+      <!-- Meta-Agent Recommendations -->
+      <section class="section" id="recommendations-section" style="display: none;">
+        <div class="section-header">
+          <h2 class="section-title">Meta-Agent Recommendations</h2>
+          <button class="btn btn-primary" onclick="app.applyImprovements()">
+            <span class="icon">✨</span>
+            Apply Improvements
+          </button>
+        </div>
+        <div id="recommendations">
+          <!-- Recommendations will be inserted here -->
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Add Repository Modal -->
+  <div id="add-repo-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Add Target Repository</h3>
+        <button class="modal-close" onclick="app.closeAddRepoModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="add-repo-form" onsubmit="app.addRepository(event)">
+          <div class="form-group">
+            <label for="repo-name">Repository Name</label>
+            <input type="text" id="repo-name" required placeholder="todo-ai-agents">
+          </div>
+          <div class="form-group">
+            <label for="repo-path">Local Path</label>
+            <input type="text" id="repo-path" required placeholder="C:\Repos\todo-ai-agents">
+            <small>Absolute path to repository on local machine</small>
+          </div>
+          <div class="form-group">
+            <label for="repo-techdebt-url">TechDebtGPT Project URL</label>
+            <input type="url" id="repo-techdebt-url" required
+                   placeholder="https://app.techdebtgpt.com/projects/.../team-performance">
+          </div>
+          <div class="form-group">
+            <label for="repo-github-url">GitHub URL (optional)</label>
+            <input type="url" id="repo-github-url"
+                   placeholder="https://github.com/username/repo">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="app.closeAddRepoModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Add Repository</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay" class="loading-overlay" style="display: none;">
+    <div class="spinner"></div>
+    <div class="loading-text">Processing...</div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

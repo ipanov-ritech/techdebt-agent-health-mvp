@@ -1,0 +1,35 @@
+{
+  "name": "techdebt-agent-health-mvp",
+  "version": "1.0.0",
+  "description": "Meta-agent system for monitoring and improving AI development agents",
+  "main": "src/index.js",
+  "scripts": {
+    "analyze": "node src/index.js",
+    "scrape": "node src/scraper/techdebtgpt-scraper.js",
+    "dashboard": "http-server src/dashboard -p 8080",
+    "test": "jest",
+    "setup": "node scripts/setup.js"
+  },
+  "keywords": [
+    "ai-agents",
+    "techdebt",
+    "meta-agent",
+    "agent-monitoring"
+  ],
+  "author": "Ilija Panov",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^20.0.2",
+    "dotenv": "^16.3.1",
+    "playwright": "^1.40.1",
+    "axios": "^1.6.2",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2"
+  }
+}
