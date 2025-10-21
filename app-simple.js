@@ -155,36 +155,98 @@ function displayImprovements(agent) {
   title.textContent = `🎯 Recommended Improvements for ${agent.name}`;
   button.textContent = `✨ Apply Improvements to ${agent.name}`;
 
-  // Generate recommendations based on weaknesses
+  // Generate role-specific recommendations
   const recommendations = [];
 
-  if (agent.weaknesses.quality < 70) {
-    recommendations.push('Add comprehensive unit tests before implementation (TDD approach)');
-    recommendations.push('Set code coverage minimum to 80% for all new features');
-    recommendations.push('Implement pre-commit hooks for linting and testing');
+  // Determine agent's primary role
+  const role = agent.role.toLowerCase();
+  const isProductOwner = role.includes('product') || role.includes('pm');
+  const isFrontend = role.includes('frontend') || role.includes('ui');
+  const isDevOps = role.includes('devops') || role.includes('infrastructure');
+  const isBackend = !isProductOwner && !isFrontend && !isDevOps;
+
+  // Role-specific improvement recommendations
+  if (isProductOwner) {
+    if (agent.weaknesses.quality < 70) {
+      recommendations.push(`<strong>Requirements Quality:</strong> Define clear, testable acceptance criteria for every user story`);
+      recommendations.push(`Follow "As a [user], I want [goal] so that [benefit]" structure for all stories`);
+    }
+    if (agent.weaknesses.productivity < 70) {
+      recommendations.push(`<strong>Backlog Management:</strong> Conduct ${Math.max(12 - agent.commits, 3)}+ backlog refinement sessions per sprint`);
+      recommendations.push(`Ensure all upcoming stories are estimated and prioritized before sprint planning`);
+    }
+    if (agent.weaknesses.collaboration < 70) {
+      recommendations.push(`<strong>Stakeholder Engagement:</strong> Provide clear product vision and roadmap updates to the team`);
+      recommendations.push(`Gather and incorporate feedback from ${Math.max(5 - agent.reviews, 3)}+ team members per sprint`);
+    }
+    if (agent.weaknesses.reliability < 70) {
+      recommendations.push(`<strong>Product Delivery:</strong> Prevent scope creep by clearly defining MVP requirements`);
+      recommendations.push(`Maintain updated release roadmap with realistic timelines`);
+    }
+  } else if (isFrontend) {
+    if (agent.weaknesses.quality < 70) {
+      recommendations.push(`<strong>UI/UX Quality:</strong> Write unit tests for all React components using Jest/Testing Library`);
+      recommendations.push(`Ensure WCAG 2.1 AA compliance for all UI components`);
+    }
+    if (agent.weaknesses.productivity < 70) {
+      recommendations.push(`<strong>Frontend Velocity:</strong> Make ${Math.max(12 - agent.commits, 5)}+ commits per sprint`);
+      recommendations.push(`Build atomic, reusable UI components and optimize bundle size`);
+    }
+    if (agent.weaknesses.collaboration < 70) {
+      recommendations.push(`<strong>Design Collaboration:</strong> Review ${Math.max(5 - agent.reviews, 3)}+ UI/UX implementations from team`);
+      recommendations.push(`Coordinate with backend team on data requirements and API integration`);
+    }
+    if (agent.weaknesses.reliability < 70) {
+      recommendations.push(`<strong>Frontend Reliability:</strong> Implement comprehensive error boundaries and user-friendly error messages`);
+      recommendations.push(`Ensure mobile responsiveness across all screen sizes`);
+    }
+  } else if (isDevOps) {
+    if (agent.weaknesses.quality < 70) {
+      recommendations.push(`<strong>Infrastructure Quality:</strong> Write tests for Terraform/CloudFormation templates`);
+      recommendations.push(`Add automated security scanning to CI/CD pipeline`);
+    }
+    if (agent.weaknesses.productivity < 70) {
+      recommendations.push(`<strong>Automation Efficiency:</strong> Make ${Math.max(12 - agent.commits, 5)}+ automation commits per sprint`);
+      recommendations.push(`Reduce CI/CD pipeline execution time and automate manual deployment steps`);
+    }
+    if (agent.weaknesses.collaboration < 70) {
+      recommendations.push(`<strong>DevOps Collaboration:</strong> Review ${Math.max(5 - agent.reviews, 3)}+ infrastructure PRs`);
+      recommendations.push(`Document and train team on CI/CD processes`);
+    }
+    if (agent.weaknesses.reliability < 70) {
+      recommendations.push(`<strong>System Reliability:</strong> Implement redundancy and failover mechanisms`);
+      recommendations.push(`Test backup and recovery procedures regularly`);
+    }
+  } else if (isBackend) {
+    if (agent.weaknesses.quality < 70) {
+      recommendations.push(`<strong>Code Quality & Testing:</strong> Write comprehensive unit tests for all API endpoints and business logic`);
+      recommendations.push(`Maintain minimum 80% test coverage for backend services`);
+    }
+    if (agent.weaknesses.productivity < 70) {
+      recommendations.push(`<strong>Development Velocity:</strong> Make ${Math.max(12 - agent.commits, 5)}+ atomic commits per sprint`);
+      recommendations.push(`Document all new endpoints using OpenAPI/Swagger`);
+    }
+    if (agent.weaknesses.collaboration < 70) {
+      recommendations.push(`<strong>Team Collaboration:</strong> Review ${Math.max(5 - agent.reviews, 3)}+ backend PRs focusing on architecture`);
+      recommendations.push(`Coordinate with frontend team on API contract changes`);
+    }
+    if (agent.weaknesses.reliability < 70) {
+      recommendations.push(`<strong>System Reliability:</strong> Implement comprehensive logging and error tracking`);
+      recommendations.push(`Test all database migrations thoroughly before deployment`);
+    }
   }
 
-  if (agent.weaknesses.productivity < 70) {
-    recommendations.push(`Increase commit frequency to ${Math.max(12 - agent.commits, 5)}+ more per sprint`);
-    recommendations.push('Break work into smaller, atomic commits with conventional commit messages');
-  }
-
-  if (agent.weaknesses.collaboration < 70) {
-    recommendations.push(`Review at least ${Math.max(5 - agent.reviews, 3)} more PRs before submitting own code`);
-    recommendations.push('Provide constructive, specific feedback on architecture and patterns');
-  }
-
-  if (agent.weaknesses.reliability < 70) {
-    recommendations.push('Complete one task fully before starting another');
-    recommendations.push('Break complex tasks (>4 hours) into smaller subtasks');
-    recommendations.push('Report blockers within 30 minutes of identification');
+  // Add common recommendations if no specific weaknesses found
+  if (recommendations.length === 0) {
+    recommendations.push('Agent is performing well across all metrics! 🎉');
+    recommendations.push('Continue maintaining current standards and best practices');
   }
 
   list.innerHTML = recommendations.map(rec => `<li>${rec}</li>`).join('');
   section.classList.remove('hidden');
 }
 
-async function applyImprovements() {
+async function applyImprovements(event) {
   const button = event.target;
   button.disabled = true;
   button.textContent = '⏳ Applying improvements...';

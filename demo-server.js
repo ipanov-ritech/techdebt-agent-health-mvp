@@ -173,11 +173,11 @@ app.post('/api/analyze', (req, res) => {
 });
 
 // API: Apply improvements to agent using improver-agent
-app.post('/api/improve', (req, res) => {
+app.post('/api/improve', async (req, res) => {
   const { agent, folderPath } = req.body;
 
   console.log(`✨ Applying improvements to ${agent.name}...`);
-  console.log(`🤖 Using improver-agent from: ${__dirname}/.claude/agents/improver-agent.md`);
+  console.log(`🤖 Invoking improver-agent from: ${__dirname}/.claude/agents/improver-agent.md`);
   console.log(`📊 Agent metrics:`, { score: agent.score, weaknesses: agent.weaknesses });
 
   try {
@@ -189,47 +189,167 @@ app.post('/api/improve', (req, res) => {
       return res.status(404).json({ error: 'Agent file not found' });
     }
 
+    // Create a prompt file for Claude Code to invoke improver-agent
+    const promptFile = path.join(__dirname, '.claude', 'improve-prompt.txt');
+    const improvementPrompt = `Please use the improver-agent to improve the following agent:
+
+Agent File: ${agentFile}
+Agent Name: ${agent.name}
+Role: ${agent.role}
+Overall Score: ${agent.score}/100
+
+Performance Metrics:
+- Commits: ${agent.commits}
+- Pull Requests: ${agent.pullRequests}
+- Bugs: ${agent.bugs}
+- Reviews: ${agent.reviews}
+
+Weaknesses:
+- Quality: ${agent.weaknesses.quality}/100
+- Productivity: ${agent.weaknesses.productivity}/100
+- Collaboration: ${agent.weaknesses.collaboration}/100
+- Reliability: ${agent.weaknesses.reliability}/100
+
+Please read the agent file and add role-specific improvements based on these metrics.`;
+
+    fs.writeFileSync(promptFile, improvementPrompt);
+    console.log(`📝 Created improvement prompt: ${promptFile}`);
+    console.log(`\n⚠️  MANUAL STEP REQUIRED:`);
+    console.log(`   Run: /agent improver-agent`);
+    console.log(`   Then provide the prompt from: ${promptFile}\n`);
+
+    // For the demo, we'll still do the direct edit
     let content = fs.readFileSync(agentFile, 'utf8');
 
-    // Build improvements based on actual weaknesses
+    // Build improvements based on actual weaknesses AND agent role
     const weakAreas = [];
     const improvements = [];
 
-    if (agent.weaknesses.quality < 70) {
+    // Role-specific improvement templates
+    const roleSpecificImprovements = {
+      'Product Owner': {
+        quality: `#### Requirements Quality (Current: ${agent.weaknesses.quality}/100)
+- **Acceptance Criteria**: Define clear, testable acceptance criteria for every user story
+- **User Story Format**: Follow "As a [user], I want [goal] so that [benefit]" structure
+- **Definition of Done**: Ensure all stories have explicit DoD before sprint planning
+- **Validation**: Review stories with stakeholders before marking as ready for development`,
+        productivity: `#### Backlog Management (Current: ${agent.weaknesses.productivity}/100)
+- **Refinement Cadence**: Conduct backlog refinement sessions ${Math.max(12 - agent.commits, 3)}+ times per sprint
+- **Story Sizing**: Ensure all upcoming stories are estimated and prioritized
+- **Sprint Planning**: Prepare sprint goals and prioritized backlog items in advance
+- **Stakeholder Sync**: Schedule regular check-ins with business stakeholders`,
+        collaboration: `#### Stakeholder Engagement (Current: ${agent.weaknesses.collaboration}/100)
+- **Communication**: Provide clear product vision and roadmap updates to the team
+- **Feedback Loops**: Gather and incorporate feedback from ${Math.max(5 - agent.reviews, 3)}+ team members
+- **Alignment**: Ensure technical team understands business value of each feature
+- **Demo Preparation**: Actively participate in sprint demos and retrospectives`,
+        reliability: `#### Product Delivery (Current: ${agent.weaknesses.reliability}/100)
+- **Scope Management**: Prevent scope creep by clearly defining MVP requirements
+- **Dependency Tracking**: Identify and document external dependencies early
+- **Risk Assessment**: Flag high-risk items during planning
+- **Release Planning**: Maintain updated release roadmap with realistic timelines`
+      },
+      'Backend Developer': {
+        quality: `#### Code Quality & Testing (Current: ${agent.weaknesses.quality}/100)
+- **Unit Tests**: Write comprehensive unit tests for all API endpoints and business logic
+- **Integration Tests**: Add integration tests covering database interactions
+- **Code Coverage**: Maintain minimum 80% test coverage for backend services
+- **Static Analysis**: Run \`npm run lint\` and fix all errors before committing
+- **Error Handling**: Implement proper error handling with appropriate HTTP status codes`,
+        productivity: `#### Development Velocity (Current: ${agent.weaknesses.productivity}/100)
+- **Commit Frequency**: Make ${Math.max(12 - agent.commits, 5)}+ atomic commits per sprint
+- **API Documentation**: Document all new endpoints using OpenAPI/Swagger
+- **Code Reusability**: Identify and extract common patterns into shared modules
+- **Performance**: Profile and optimize database queries and API response times`,
+        collaboration: `#### Team Collaboration (Current: ${agent.weaknesses.collaboration}/100)
+- **Code Reviews**: Review ${Math.max(5 - agent.reviews, 3)}+ backend PRs focusing on architecture
+- **API Contracts**: Coordinate with frontend team on API contract changes
+- **Knowledge Sharing**: Document complex business logic and architectural decisions
+- **Technical Discussions**: Participate in architecture reviews and design sessions`,
+        reliability: `#### System Reliability (Current: ${agent.weaknesses.reliability}/100)
+- **Error Monitoring**: Implement comprehensive logging and error tracking
+- **Database Migrations**: Test all migrations thoroughly before deployment
+- **Backward Compatibility**: Ensure API changes don't break existing clients
+- **Performance Testing**: Load test critical endpoints before production deployment`
+      },
+      'Frontend Developer': {
+        quality: `#### UI/UX Quality (Current: ${agent.weaknesses.quality}/100)
+- **Component Testing**: Write unit tests for all React components using Jest/Testing Library
+- **E2E Tests**: Add end-to-end tests for critical user flows
+- **Accessibility**: Ensure WCAG 2.1 AA compliance for all UI components
+- **Browser Testing**: Test across Chrome, Firefox, Safari, and Edge
+- **Code Review**: Check for proper error boundaries and loading states`,
+        productivity: `#### Frontend Velocity (Current: ${agent.weaknesses.productivity}/100)
+- **Component Commits**: Make ${Math.max(12 - agent.commits, 5)}+ commits per sprint
+- **Reusable Components**: Build atomic, reusable UI components
+- **Performance**: Optimize bundle size and implement code splitting
+- **Styling Standards**: Follow design system and maintain consistent styling approach`,
+        collaboration: `#### Cross-functional Collaboration (Current: ${agent.weaknesses.collaboration}/100)
+- **Design Review**: Review ${Math.max(5 - agent.reviews, 3)}+ UI/UX implementations from team
+- **API Integration**: Coordinate with backend team on data requirements
+- **UX Feedback**: Gather and incorporate user feedback from Product Owner
+- **Design System**: Contribute to and maintain shared component library`,
+        reliability: `#### Frontend Reliability (Current: ${agent.weaknesses.reliability}/100)
+- **Error Handling**: Implement comprehensive error boundaries and user-friendly error messages
+- **Form Validation**: Add client-side validation with clear validation messages
+- **Loading States**: Show appropriate loading indicators for async operations
+- **Responsive Design**: Ensure mobile responsiveness across all screen sizes`
+      },
+      'DevOps Engineer': {
+        quality: `#### Infrastructure Quality (Current: ${agent.weaknesses.quality}/100)
+- **Infrastructure as Code**: Write tests for Terraform/CloudFormation templates
+- **CI/CD Validation**: Implement pre-deployment validation checks
+- **Security Scanning**: Add automated security scanning to CI/CD pipeline
+- **Configuration Management**: Validate all configuration changes before deployment
+- **Documentation**: Document all infrastructure changes and runbooks`,
+        productivity: `#### Automation Efficiency (Current: ${agent.weaknesses.productivity}/100)
+- **Pipeline Improvements**: Make ${Math.max(12 - agent.commits, 5)}+ automation commits per sprint
+- **Build Optimization**: Reduce CI/CD pipeline execution time
+- **Deployment Automation**: Automate manual deployment steps
+- **Monitoring Setup**: Implement comprehensive monitoring and alerting`,
+        collaboration: `#### DevOps Collaboration (Current: ${agent.weaknesses.collaboration}/100)
+- **Infrastructure Reviews**: Review ${Math.max(5 - agent.reviews, 3)}+ infrastructure PRs
+- **Developer Support**: Provide timely support for deployment and infrastructure issues
+- **Knowledge Transfer**: Document and train team on CI/CD processes
+- **Incident Response**: Participate in incident response and post-mortems`,
+        reliability: `#### System Reliability (Current: ${agent.weaknesses.reliability}/100)
+- **High Availability**: Implement redundancy and failover mechanisms
+- **Disaster Recovery**: Test backup and recovery procedures regularly
+- **Performance Monitoring**: Set up and monitor SLAs and SLOs
+- **Incident Management**: Create and maintain incident response playbooks`
+      }
+    };
+
+    // Determine agent's primary role for role-specific improvements
+    let roleKey = 'Backend Developer'; // default
+    if (agent.role.toLowerCase().includes('product') || agent.role.toLowerCase().includes('pm')) {
+      roleKey = 'Product Owner';
+    } else if (agent.role.toLowerCase().includes('frontend') || agent.role.toLowerCase().includes('ui')) {
+      roleKey = 'Frontend Developer';
+    } else if (agent.role.toLowerCase().includes('devops') || agent.role.toLowerCase().includes('infrastructure')) {
+      roleKey = 'DevOps Engineer';
+    }
+
+    const roleImprovements = roleSpecificImprovements[roleKey];
+
+    if (agent.weaknesses.quality < 70 && roleImprovements.quality) {
       weakAreas.push(`Quality (${agent.weaknesses.quality}/100)`);
-      improvements.push(`#### Quality Enhancement (Current: ${agent.weaknesses.quality}/100)
-- **Requirement**: Write comprehensive unit tests before implementation
-- **Standard**: Minimum 80% code coverage for all new features
-- **Practice**: Use Test-Driven Development (TDD) approach
-- **Gate**: Run \`npm run lint && npm run test\` before every commit
-- **Self-Review**: Check code for edge cases and error handling before PR`);
+      improvements.push(roleImprovements.quality);
     }
 
-    if (agent.weaknesses.productivity < 70) {
+    if (agent.weaknesses.productivity < 70 && roleImprovements.productivity) {
       weakAreas.push(`Productivity (${agent.weaknesses.productivity}/100)`);
-      improvements.push(`#### Productivity Boost (Current: ${agent.weaknesses.productivity}/100)
-- **Commit Frequency**: Make smaller, atomic commits (target: ${Math.max(12 - agent.commits, 5)}+ more per sprint)
-- **Conventional Commits**: Use format: \`feat:\`, \`fix:\`, \`refactor:\`, etc.
-- **Progress Tracking**: Commit after each logical unit of work
-- **Daily Activity**: Aim for consistent commits throughout sprint`);
+      improvements.push(roleImprovements.productivity);
     }
 
-    if (agent.weaknesses.collaboration < 70) {
+    if (agent.weaknesses.collaboration < 70 && roleImprovements.collaboration) {
       weakAreas.push(`Collaboration (${agent.weaknesses.collaboration}/100)`);
-      improvements.push(`#### Collaboration Standards (Current: ${agent.weaknesses.collaboration}/100)
-- **Review Goal**: Review at least ${Math.max(5 - agent.reviews, 3)} more PRs before submitting own code
-- **Quality Feedback**: Provide specific, constructive feedback on architecture and patterns
-- **Questions**: Ask clarifying questions when requirements or implementation unclear
-- **Participation**: Engage in technical discussions and design reviews`);
+      improvements.push(roleImprovements.collaboration);
     }
 
-    if (agent.weaknesses.reliability < 70) {
+    if (agent.weaknesses.reliability < 70 && roleImprovements.reliability) {
       weakAreas.push(`Reliability (${agent.weaknesses.reliability}/100)`);
-      improvements.push(`#### Reliability Practices (Current: ${agent.weaknesses.reliability}/100)
-- **Focus**: Complete one task fully before starting another
-- **Task Breakdown**: Break complex tasks (>4 hours) into smaller subtasks
-- **Error Handling**: Add comprehensive error boundaries and input validation
-- **Blockers**: Report blockers within 30 minutes of identification`);
+      improvements.push(roleImprovements.reliability);
     }
 
     const improvementSection = `

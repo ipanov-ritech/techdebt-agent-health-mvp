@@ -1,0 +1,20 @@
+Please use the improver-agent to improve the following agent:
+
+Agent File: C:\Repos\todo-ai-agents\.claude\agents\backend-agent.md
+Agent Name: Backend Developer AI
+Role: ASP.NET Core Backend Developer
+Overall Score: 62/100
+
+Performance Metrics:
+- Commits: 5
+- Pull Requests: 2
+- Bugs: 5
+- Reviews: 0
+
+Weaknesses:
+- Quality: 0/100
+- Productivity: 42/100
+- Collaboration: 0/100
+- Reliability: 59/100
+
+Please read the agent file and add role-specific improvements based on these metrics.
